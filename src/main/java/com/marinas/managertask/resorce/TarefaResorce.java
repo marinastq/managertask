@@ -1,7 +1,9 @@
 package com.marinas.managertask.resorce;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import com.marinas.managertask.StatusTask;
 import com.marinas.managertask.Tarefa;
 import com.marinas.managertask.repository.TarefaRepository;
 
@@ -34,13 +36,14 @@ public class TarefaResorce {
 		return Response.ok(tarefas).status(201).build();
 	}
 	
-	
 	@Transactional
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response newTarefa(Tarefa tarefa){
+    public Response newTask(Tarefa tarefa){
 		tarefa.id = null;
+		tarefa.status = StatusTask.TO_DO;
+		
         tarefa.persist();
 
         return Response.status(Status.CREATED).entity(tarefa).build();
@@ -52,6 +55,14 @@ public class TarefaResorce {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Tarefa> findByNome(@QueryParam("nome") String nome){
         return tarefaRepository.findByNome(nome);
+    }
+    
+    //localhost:8080/tarefa/findByDay?nome=xxxx
+    @GET
+    @Path("findByDay")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Tarefa> findByDay(@QueryParam("dia") LocalDate dia){
+        return tarefaRepository.findByDia(dia);
     }
     
     //localhost:8080/tarefa/findByNomeLike?nome=xxxx
@@ -74,12 +85,13 @@ public class TarefaResorce {
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateGrupo(@QueryParam("id") Long id, Tarefa tarefa){
+	public Response updateTask(@QueryParam("id") Long id, Tarefa tarefa){
     	Tarefa tarefaCadastrada = tarefaRepository.findByIdOptional(id)
     								.orElseThrow(() -> new NotFoundException("Tarefa com id " + id + " nao encontrada"));
     	
 		tarefaCadastrada.nome = tarefa.nome;
-		
+		tarefaCadastrada.dia = tarefa.dia;
+		tarefaCadastrada.status = tarefa.status;
 		
 	    return Response.status(Status.ACCEPTED).entity(tarefaCadastrada).build();
 	}

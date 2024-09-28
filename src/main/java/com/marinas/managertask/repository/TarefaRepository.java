@@ -1,5 +1,6 @@
 package com.marinas.managertask.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,4 +24,8 @@ public class TarefaRepository implements PanacheRepository<Tarefa> {
 	public Optional<Tarefa> buscarTarefaPorId(Long id) {
 	    return Optional.ofNullable(Tarefa.findById(id));
 	}
+	
+	public List<Tarefa> findByDia(LocalDate dia) {
+        return find("dia", dia).list();
+    }
 }
