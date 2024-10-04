@@ -87,8 +87,6 @@ public class TarefaResorce {
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateTask(@PathParam("id") Long id, Tarefa tarefa){
-    	System.out.print("xxxxxxxxxx" + id);
-    	System.out.print(id);
     	Tarefa tarefaCadastrada = tarefaRepository.findByIdOptional(id)
     								.orElseThrow(() -> new NotFoundException("Tarefa com id " + id + " nao encontrada"));
     	
