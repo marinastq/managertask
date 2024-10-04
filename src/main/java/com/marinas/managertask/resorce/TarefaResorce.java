@@ -16,6 +16,7 @@ import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
@@ -85,7 +86,9 @@ public class TarefaResorce {
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateTask(@QueryParam("id") Long id, Tarefa tarefa){
+	public Response updateTask(@PathParam("id") Long id, Tarefa tarefa){
+    	System.out.print("xxxxxxxxxx" + id);
+    	System.out.print(id);
     	Tarefa tarefaCadastrada = tarefaRepository.findByIdOptional(id)
     								.orElseThrow(() -> new NotFoundException("Tarefa com id " + id + " nao encontrada"));
     	
